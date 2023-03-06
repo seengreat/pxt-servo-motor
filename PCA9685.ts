@@ -2,7 +2,7 @@
  * 自定义图形块
  */
 //% weight=5 color=#0fbc11 icon="\uf113"
-namespace Servo_motor {
+namespace servo_motor {
     const PCA9685_ADDRESS = 0x40
     const MODE1 = 0x00
     const MODE2 = 0x01
@@ -92,7 +92,7 @@ namespace Servo_motor {
     //% blockId=setServo block="Servo channel|%channel|degree %degree"
     //% weight=85
     //% degree.min=0 degree.max=180
-    export function Servo_motor(channel: number,degree: number): void {
+    export function servo_motor(channel: number,degree: number): void {
 		if (!initialized) {
             initPCA9685();
         }
@@ -109,7 +109,7 @@ namespace Servo_motor {
     //% blockId=setServoPulse block="Servo channel|%channel|pulse %pulse"
     //% weight=85
     //% pulse.min=500 pulse.max=2500
-    export function ServoPulse(channel: number,pulse: number): void {
+    export function servo_pulse(channel: number,pulse: number): void {
 		if (!initialized) {
             initPCA9685();
         }
