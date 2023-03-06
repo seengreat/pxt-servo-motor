@@ -1,0 +1,24 @@
+{
+    "name": "servo-motor",
+    "version": "0.0.0",
+    "description": "PCA9685 to drive servo and motor for Microbit",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*"
+    },
+    "files": [
+        "README.md",
+        "PCA9685.blocks",
+        "PCA9685.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "blocksprj"
+}
