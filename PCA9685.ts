@@ -124,10 +124,10 @@ namespace servo_motor {
         setPwm(servo_channel[channel], 0, value);
     }
 	/**
-	 * Servo Execute
-	 * @param degree [0-180] degree of servo; eg: 90, 0, 180
+	 * Motor Execute
+	 * @param degree [0-180] degree of motor; eg: 90, 0, 180
 	*/
-    //% blockId=setServo block="Motor channel|%channel|degree %degree"
+    //% blockId=setMotor block="Motor channel|%channel|degree %degree"
     //% weight=85
     //% degree.min=0 degree.max=180
     export function motor(channel: number,degree: number): void {
@@ -141,10 +141,10 @@ namespace servo_motor {
     }
 	
 	/**
-	 * Servo Execute
-	 * @param pulse [500-2500] pulse of servo; eg: 1500, 500, 2500
+	 * Motor Execute
+	 * @param pulse [500-2500] pulse of motor; eg: 1500, 500, 2500
 	*/
-    //% blockId=setServoPulse block="Motor channel|%channel|pulse %pulse"
+    //% blockId=setMotorPulse block="Motor channel|%channel|pulse %pulse"
     //% weight=85
     //% pulse.min=500 pulse.max=2500
     export function motor_pulse(channel: number,pulse: number): void {
