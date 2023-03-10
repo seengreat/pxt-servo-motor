@@ -31,6 +31,12 @@ namespace servo_motor {
     const STP_CHD_L = 3071
     const STP_CHD_H = 1023
 
+    const servo_channel = [8, 9, 10, 11, 12, 13, 14, 15]
+    const motor_m1_a = [0, 1]
+    const motor_m1_b = [2, 3]
+    const motor_m2_a = [4, 5]
+    const motor_m2_b = [6, 7]
+
     let initialized = false
 
     function i2cwrite(addr: number, reg: number, value: number) {
@@ -92,7 +98,39 @@ namespace servo_motor {
     //% blockId=setServo block="Servo channel|%channel|degree %degree"
     //% weight=85
     //% degree.min=0 degree.max=180
-    export function servo_motor(channel: number,degree: number): void {
+    export function servo(channel: number,degree: number): void {
+		if (!initialized) {
+            initPCA9685();
+        }
+		// 50hz: 20,000 us
+        let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4
+        let value = v_us * 4096 / 20000;
+        setPwm(servo_channel[channel], 0, value);
+    }
+	
+	/**
+	 * Servo Execute
+	 * @param pulse [500-2500] pulse of servo; eg: 1500, 500, 2500
+	*/
+    //% blockId=setServoPulse block="Servo channel|%channel|pulse %pulse"
+    //% weight=85
+    //% pulse.min=500 pulse.max=2500
+    export function servo_pulse(channel: number,pulse: number): void {
+		if (!initialized) {
+            initPCA9685();
+        }
+		// 50hz: 20,000 us
+        let value = pulse * 4096 / 20000;
+        setPwm(servo_channel[channel], 0, value);
+    }
+	/**
+	 * Servo Execute
+	 * @param degree [0-180] degree of servo; eg: 90, 0, 180
+	*/
+    //% blockId=setServo block="Motor channel|%channel|degree %degree"
+    //% weight=85
+    //% degree.min=0 degree.max=180
+    export function motor(channel: number,degree: number): void {
 		if (!initialized) {
             initPCA9685();
         }
@@ -106,10 +144,10 @@ namespace servo_motor {
 	 * Servo Execute
 	 * @param pulse [500-2500] pulse of servo; eg: 1500, 500, 2500
 	*/
-    //% blockId=setServoPulse block="Servo channel|%channel|pulse %pulse"
+    //% blockId=setServoPulse block="Motor channel|%channel|pulse %pulse"
     //% weight=85
     //% pulse.min=500 pulse.max=2500
-    export function servo_pulse(channel: number,pulse: number): void {
+    export function motor_pulse(channel: number,pulse: number): void {
 		if (!initialized) {
             initPCA9685();
         }
