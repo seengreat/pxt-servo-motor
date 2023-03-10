@@ -105,7 +105,7 @@ namespace servo_motor {
 		// 50hz: 20,000 us
         let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4
         let value = v_us * 4096 / 20000;
-        setPwm(servo_channel[channel], 0, value);
+        setPwm(servo_channel[channel-1], 0, value);
     }
 	
 	/**
@@ -121,7 +121,7 @@ namespace servo_motor {
         }
 		// 50hz: 20,000 us
         let value = pulse * 4096 / 20000;
-        setPwm(servo_channel[channel], 0, value);
+        setPwm(servo_channel[channel-1], 0, value);
     }
 	/**
 	 * Motor Execute
