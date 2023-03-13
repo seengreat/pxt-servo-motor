@@ -160,11 +160,11 @@ namespace servo_motor {
     }
 	/**
 	 * Servo Execute
-	 * @param degree [0-180] degree of servo; eg: 90, 0, 180
+	 * @param speed [0-180] speed of servo; eg: 90, 0, 180
 	*/
-    //% blockId=setMotor block="Motor channel|%channel|degree %degree"
+    //% blockId=setMotor block="Motor channel|%channel|speed %speed"
     //% weight=85
-    //% degree.min=0 degree.max=4095
+    //% speed.min=0 speed.max=4095
     export function motor(motor_name: Motor,dir: Dir, speed:number): void {
 		if (!initialized) {
             initPCA9685();
