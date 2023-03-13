@@ -4,9 +4,9 @@ enum Motor {
     //% block="LB"
     M1_B = 0x2,
     //% block="RA"
-    M2_A = 0x2,
+    M2_A = 0x3,
     //% block="RB"
-    M2_B = 0x3,
+    M2_B = 0x4,
 }
 enum Servo_Ch {
     //% block="S1"
@@ -131,15 +131,19 @@ namespace servo_motor {
 	*/
     //% blockId=setServo block="Servo channel|%channel|degree %degree"
     //% weight=85
-    //% degree.min=0 degree.max=180
+    /*for 0~180 degree servo*/
+    /*//% degree.min=0 degree.max=180 */
+    /*for 0~270 degree servo*/
+    //% degree.min=0 degree.max=270
     export function servo(channel: Servo_Ch, degree: number): void {
 		if (!initialized) {
             initPCA9685();
         }
 		// 50hz: 20,000 us
-        let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4
+        // let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4 for 0~180 degree servo
+        let v_us = (degree * 1800 / 270 + 600); // 0.6 ~ 2.4 for 0~270 degree servo
         let value = v_us * 4096 / 20000;
-        setPwm(channel-1, 0, value);
+        setPwm(channel, 0, value);
     }
 	
 	/**
@@ -160,17 +164,17 @@ namespace servo_motor {
     }
 	/**
 	 * Servo Execute
-	 * @param speed [0-4095] speed of servo; eg: 90, 0, 180
+	 * @param speed [0-180] speed of servo; eg: 90, 0, 180
 	*/
     //% blockId=setMotor block="Motor channel|%channel|dir %dir|speed %speed"
     //% weight=85
-    //% speed.min=0 speed.max=4095
+    //% speed.min=255 speed.max=4095
     export function motor(motor_name: Motor,dir: Dir, speed:number): void {
 		if (!initialized) {
             initPCA9685();
         }
         // 50hz: 20,000 us
-        let value = speed * 4096 / 20000;
+        let value = speed;
         switch (motor_name) { 
             case Motor.M1_A:
                 if (dir == Dir.forward) {
