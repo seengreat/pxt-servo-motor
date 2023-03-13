@@ -160,9 +160,9 @@ namespace servo_motor {
     }
 	/**
 	 * Servo Execute
-	 * @param speed [0-180] speed of servo; eg: 90, 0, 180
+	 * @param speed [0-4095] speed of servo; eg: 90, 0, 180
 	*/
-    //% blockId=setMotor block="Motor channel|%channel|speed %speed"
+    //% blockId=setMotor block="Motor channel|%channel|dir %dir|speed %speed"
     //% weight=85
     //% speed.min=0 speed.max=4095
     export function motor(motor_name: Motor,dir: Dir, speed:number): void {
