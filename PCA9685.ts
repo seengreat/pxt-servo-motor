@@ -1,3 +1,38 @@
+enum Motor {
+    //% block="LA"
+    M1_A = 0x1,
+    //% block="LB"
+    M1_B = 0x2,
+    //% block="RA"
+    M2_A = 0x2,
+    //% block="RB"
+    M2_B = 0x3,
+}
+enum Servo_Ch {
+    //% block="S1"
+    S1 = 8,
+    //% block="S2"
+    S2 = 9,
+    //% block="S3"
+    S3 = 10,
+    //% block="S4"
+    S4 = 11,
+    //% block="S5"
+    S5 = 12,
+    //% block="S6"
+    S6 = 13,
+    //% block="S7"
+    S7 = 14,
+    //% block="S8"
+    S8 = 15,
+}
+
+enum Dir {
+    //% block="Forward"
+    forward = 0x1,
+    //% block="Backward"
+    backward = 0x2,
+}
 /**
  * 自定义图形块
  */
@@ -31,7 +66,6 @@ namespace servo_motor {
     const STP_CHD_L = 3071
     const STP_CHD_H = 1023
 
-    const servo_channel = [8, 9, 10, 11, 12, 13, 14, 15]
     const motor_m1_a = [0, 1]
     const motor_m1_b = [2, 3]
     const motor_m2_a = [4, 5]
@@ -98,14 +132,14 @@ namespace servo_motor {
     //% blockId=setServo block="Servo channel|%channel|degree %degree"
     //% weight=85
     //% degree.min=0 degree.max=180
-    export function servo(channel: number,degree: number): void {
+    export function servo(channel: Servo_Ch, degree: number): void {
 		if (!initialized) {
             initPCA9685();
         }
 		// 50hz: 20,000 us
         let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4
         let value = v_us * 4096 / 20000;
-        setPwm(servo_channel[channel-1], 0, value);
+        setPwm(channel-1, 0, value);
     }
 	
 	/**
@@ -114,45 +148,70 @@ namespace servo_motor {
 	*/
     //% blockId=setServoPulse block="Servo channel|%channel|pulse %pulse"
     //% weight=85
+    //% channel.min=1 channel.max=8
     //% pulse.min=500 pulse.max=2500
-    export function servo_pulse(channel: number,pulse: number): void {
+    export function servo_pulse(channel: Servo_Ch, pulse: number): void {
 		if (!initialized) {
             initPCA9685();
         }
 		// 50hz: 20,000 us
         let value = pulse * 4096 / 20000;
-        setPwm(servo_channel[channel-1], 0, value);
+        setPwm(channel, 0, value);
     }
 	/**
-	 * Motor Execute
-	 * @param degree [0-180] degree of motor; eg: 90, 0, 180
+	 * Servo Execute
+	 * @param degree [0-180] degree of servo; eg: 90, 0, 180
 	*/
     //% blockId=setMotor block="Motor channel|%channel|degree %degree"
     //% weight=85
-    //% degree.min=0 degree.max=180
-    export function motor(channel: number,degree: number): void {
+    //% degree.min=0 degree.max=4095
+    export function motor(motor_name: Motor,dir: Dir, speed:number): void {
 		if (!initialized) {
             initPCA9685();
         }
-		// 50hz: 20,000 us
-        let v_us = (degree * 1800 / 180 + 600); // 0.6 ~ 2.4
-        let value = v_us * 4096 / 20000;
-        setPwm(channel, 0, value);
-    }
-	
-	/**
-	 * Motor Execute
-	 * @param pulse [500-2500] pulse of motor; eg: 1500, 500, 2500
-	*/
-    //% blockId=setMotorPulse block="Motor channel|%channel|pulse %pulse"
-    //% weight=85
-    //% pulse.min=500 pulse.max=2500
-    export function motor_pulse(channel: number,pulse: number): void {
-		if (!initialized) {
-            initPCA9685();
+        // 50hz: 20,000 us
+        let value = speed * 4096 / 20000;
+        switch (motor_name) { 
+            case Motor.M1_A:
+                if (dir == Dir.forward) {
+                    setPwm(0, 0, 0);
+                    setPwm(1, 0, value);
+                }
+                else {
+                    setPwm(0, 0, value);
+                    setPwm(1, 0, 0);
+                }
+                break;
+            case Motor.M1_B:
+                if (dir == Dir.forward) {
+                    setPwm(2, 0, 0);
+                    setPwm(3, 0, value);
+                }
+                else {
+                    setPwm(2, 0, value);
+                    setPwm(3, 0, 0);
+                }
+            break;
+            case Motor.M2_A:
+                if (dir == Dir.forward) {
+                    setPwm(4, 0, 0);
+                    setPwm(5, 0, value);
+                }
+                else {
+                    setPwm(4, 0, value);
+                    setPwm(5, 0, 0);
+                }
+            break;
+            case Motor.M2_B:
+                if (dir == Dir.forward) {
+                    setPwm(6, 0, 0);
+                    setPwm(7, 0, value);
+                }
+                else {
+                    setPwm(6, 0, value);
+                    setPwm(7, 0, 0);
+                }
+                break;
         }
-		// 50hz: 20,000 us
-        let value = pulse * 4096 / 20000;
-        setPwm(channel, 0, value);
     }
 }
